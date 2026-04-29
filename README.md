@@ -20,12 +20,17 @@ crewai install
 ```
 ### Customizing
 
-**Add your `OPENAI_API_KEY` into the `.env` file**
+**This crew uses Azure OpenAI (NOT direct OpenAI).** Copy `.env.example` to `.env` and set:
+- `AZURE_API_KEY`, `AZURE_API_BASE`, `AZURE_API_VERSION`
+- `AZURE_GPT4O_DEPLOYMENT` and `AZURE_GPT4O_MINI_DEPLOYMENT` (your Azure deployment names)
+- `TAVILY_API_KEY`
+
+Do NOT set `OPENAI_API_KEY` — it's not used.
 
 - Modify `src/indian_startup_content_intelligence/config/agents.yaml` to define your agents
 - Modify `src/indian_startup_content_intelligence/config/tasks.yaml` to define your tasks
 - Modify `src/indian_startup_content_intelligence/crew.py` to add your own logic, tools and specific args
-- Modify `src/indian_startup_content_intelligence/main.py` to add custom inputs for your agents and tasks
+- The crew runs autonomously with no inputs — every kickoff produces 3 briefs (1 carousel + 2 stories) for Indian early-stage SaaS/B2B founders.
 
 ## Running the Project
 
