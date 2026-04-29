@@ -1,150 +1,214 @@
 ---
 collect_indian_startup_content:
   description: |-
-    Collect recent articles relevant to the user's topic ("{topic}") for {audience}, using BOTH the targeted Tavily web search and the ambient RSS feeds.
+    Auto-discover the most trending stories of the last 24-48 hours that matter to **Indian early-stage SaaS/B2B founders (pre-seed → series-A)**, using BOTH the Tavily web search and the ambient RSS feeds.
 
     **Steps (do all of them in this order):**
 
-    1. **Tavily targeted search:** Call `Tavily Search` with a query you craft from the user's topic. Good query patterns:
-       - 'Indian startup {topic} 2026'
-       - '{topic} India founder'
-       - 'India SaaS {topic}'
-       Pick the phrasing most likely to surface recent, India-specific articles.
+    1. **Tavily targeted search:** Call `Tavily Search` with one of these queries (pick the one that feels most likely to surface fresh, India-specific founder-relevant stories TODAY):
+       - 'Indian startup news this week'
+       - 'India early-stage founder news'
+       - 'India SaaS funding this week'
+       - 'Indian startup ecosystem trending'
 
-    2. **RSS ambient sweep:** Call `rss_feed_collector` with no arguments (uses default Indian startup feeds and a 24-hour window). If fewer than 3 items come back, retry with `hours_back=48`.
+    2. **RSS ambient sweep:** Call `rss_feed_collector` with no arguments (default Indian startup feeds, 24-hour window). If fewer than 3 items come back, retry with `hours_back=48`. The RSS tool internally validates URLs (drops dead links), so its output is pre-filtered.
 
     3. **Merge and dedupe:** Combine both result sets. Deduplicate by URL. Drop items missing a title or url.
 
-    4. **Map to RawItems:** title, brief_description (1-2 sentences from the tool snippet), url, source (use the source from the tool output — Tavily returns a URL host, RSS returns the feed name), published (ISO timestamp from tool, or empty string).
+    4. **Map to RawItems:** title, brief_description (1-2 sentences from the tool snippet, copy verbatim — do NOT rewrite), url (copy character-for-character), source (use the source from the tool output), published (ISO timestamp from tool, or empty string).
 
-    5. **Cap output at 30 items, minimum 3.** Bias toward items most relevant to "{topic}" but include some ambient coverage so the classifier has signal.
+    5. **Cap output at 30 items, minimum 3.**
 
-    6. Do NOT fetch full article bodies. Do NOT invent items beyond what the tools return.
-  expected_output: A RawItemBatch with 3-30 deduplicated items spanning both
-    Tavily search results (topic-focused) and RSS feeds (ambient), each carrying
-    title, 1-2 sentence brief_description, url, source, and published timestamp
-    (or empty if absent).
+    **Hard rules:**
+    - NEVER invent items. Every RawItem must trace to an actual tool result.
+    - NEVER modify a URL. Copy URLs exactly. The downstream brief publishes them — a 404 destroys page credibility.
+    - If a URL looks malformed (no protocol, no domain), drop the item entirely rather than try to fix it.
+    - Do NOT fetch full article bodies.
+  expected_output: A RawItemBatch with 3-30 deduplicated items spanning Tavily
+    search results and RSS feeds, each with title, 1-2 sentence brief_description,
+    a verified working url, source name, and published timestamp (or empty).
   agent: source_scout_agent
+
 classify_and_cluster:
   description: |-
-    Analyze each RawItem from the previous task and organize them into topic clusters, scoring relevance against the user's topic ("{topic}") and audience ({audience}).
+    Analyze each RawItem and organize them into topic clusters, scoring relevance against the locked persona: **Indian early-stage SaaS/B2B founders (pre-seed → series-A)**.
 
     **For each content item:**
     1. Classify with startup stage, content pillar, india_specific flag, and persona_fit_score (0.0-1.0).
-    2. Group semantically similar items into clusters.
-    3. Name each cluster with the most representative topic title.
+    2. Group semantically similar items into clusters (same event covered by multiple outlets, related sub-topics).
+    3. Name each cluster with the most specific, actionable canonical_topic title.
 
-    **Persona-fit scoring guidance — bias by topic relevance:**
-    - Items strongly aligned with "{topic}" AND useful for {audience}: persona_fit_score 0.7-1.0
-    - Items adjacent to the topic or generally useful for the audience: 0.4-0.7
-    - Items off-topic or generic ecosystem news: 0.0-0.4
+    **Persona-fit scoring guidance:**
+    - Genuinely useful for Indian early-stage founders (specific ₹ amounts, named Indian cos, frameworks, contrarian takes): persona_fit_score 0.7-1.0
+    - Adjacent (Indian startup news without direct founder takeaway, US content with India relevance): 0.4-0.7
+    - Off-pillar or generic ecosystem chatter: 0.0-0.4
 
     **Classification framework:**
     - Stages: seed, series-a, series-b+, growth, exits, irrelevant
     - Pillars: fundraising, gtm, hiring, product, founder_psych, exits, regulation
-    - Persona fit: 0.0-1.0 score for combined topic + audience relevance
+    - india_specific: true if the story is India-rooted (Indian co, Indian regulator, Indian VC), false otherwise
 
     **Output requirements:**
-    - Only include clusters with average persona_fit_score ≥ 0.3
-    - Each cluster should have 1-5 related content items
-    - Provide clear canonical topic titles
-    - Base classifications ONLY on actual item content — never invent details
-  expected_output: A JSON list of TopicCluster objects. Clusters with stage='irrelevant'
-    or with all members scoring persona_fit_score < 0.3 should be excluded from output
-    (but still persisted in DB for audit).
+    - Only include clusters with avg persona_fit_score ≥ 0.3
+    - Each cluster has 1-5 related items
+    - Base classifications ONLY on actual item content — never invent details the source lacks
+  expected_output: A TopicClusterBatch covering the persona-relevant content,
+    excluding clusters with stage='irrelevant' or avg persona_fit_score < 0.3.
+
   agent: content_classifier_and_topic_analyzer
   context:
   - collect_indian_startup_content
+
 validate_and_rank:
-  description: "Evaluate and rank each topic cluster from the previous task using
-    a scoring framework designed for Indian startup founders.\n\n**Scoring Criteria
-    (weighted):**\n1. **Indian Startup Relevance (30%)** - How specific and relevant
-    to Indian startup ecosystem\n2. **Actionability (25%)** - How immediately applicable
-    for founders  \n3. **Stage Fit (25%)** - Relevance for seed/Series A stage founders\n4.
-    **Content Quality (20%)** - Depth and credibility of source material\n\n**Process:**\n1.
-    Score each cluster 1-10 on each criterion\n2. Calculate weighted final score\n3.
-    Apply minimum threshold: final_score ≥ 6.0 AND persona_fit ≥ 0.6\n4. Return top
-    {num_briefs} topics ranked by final score, biased toward those that genuinely
-    match the user's topic \"{topic}\" for audience {audience}\n\n**Score Breakdown
-    Format:**\n\"relevance=8.0×0.3 + actionability=7.5×0.25 + stage=8.5×0.25 +
-    quality=7.0×0.2 = 7.75\""
-  expected_output: 'A RankedTopicBatch with up to {num_briefs} topics, ranked by
-    final_score. Each topic shows the actual numerical computation in score_breakdown,
-    e.g.: "relevance=8.0×0.3 + actionability=7.5×0.25 + stage=8.5×0.25 + quality=7.0×0.2 = 7.75"'
+  description: |-
+    Evaluate every TopicCluster using the scoring rubric and return the top 3 clusters most likely to drive Instagram follower growth for **Indian early-stage SaaS/B2B founders**.
+
+    **Scoring criteria (weighted):**
+    1. Indian Startup Relevance (30%) — How specific to the Indian startup ecosystem
+    2. Actionability (25%) — Can a pre-seed/Series A founder immediately apply this?
+    3. Stage Fit (25%) — Relevant for seed/Series A founders specifically
+    4. Content Quality (20%) — Substance and credibility of source material
+
+    **Process:**
+    1. Score each cluster 1-10 on each criterion
+    2. final_score = relevance×0.3 + actionability×0.25 + stage×0.25 + quality×0.2
+    3. Apply minimum thresholds: final_score ≥ 6.0 AND avg persona_fit_score ≥ 0.6
+    4. Return top 3 ranked by final_score (fewer if fewer pass thresholds)
+
+    **Score breakdown format (must show actual numbers):**
+    "relevance=8.0×0.3 + actionability=7.5×0.25 + stage=8.5×0.25 + quality=7.0×0.2 = 7.75"
+  expected_output: A RankedTopicBatch with up to 3 topics, ranked by final_score,
+    each showing the actual numerical computation in score_breakdown.
   agent: topic_ranking_and_selection_specialist
   context:
   - classify_and_cluster
+
 choose_format:
-  description: For each RankedTopic, choose the best Instagram format that drives
-    the user's primary goal "{goal}" for audience {audience}, using the format-fit
-    rubric in your backstory. Output a FormatRecommendation with reasoning that cites
-    which rubric category the topic matches and how the chosen format serves the
-    goal.
-  expected_output: A FormatRecommendationBatch, one recommendation per ranked topic.
+  description: |-
+    Of the 3 ranked topics, assign formats with this MANDATORY mix: **exactly 1 carousel + exactly 2 stories.** No reels, no static, no deviation.
+
+    **Carousel pick (1 topic):**
+    - Identify which one of the 3 topics has the most TACTICAL, framework, multi-step, or step-by-step content. That's your carousel topic.
+    - Carousels drive saves; saves drive algorithmic reach. Set expected_primary_metric = "saves".
+
+    **Story picks (the remaining 2 topics):**
+    - The other two become stories. Stories drive comments + DMs + quick engagement.
+    - Set expected_primary_metric = "comments" for both.
+
+    **Rubric for the carousel (cite which one applies):**
+    - Tactical content (frameworks, checklists, playbooks)
+    - Tutorial / how-to with visual density
+    - Multi-step decision framework
+    - Detailed breakdown of an Indian co's strategy
+
+    **Rubric for the 2 stories:**
+    - Single contrarian statistic or hot take
+    - Debate / dilemma content (bootstrap vs raise, India-first vs global, ESOP %)
+    - News commentary requiring speed
+    - Quick-frame opinion or "X companies did Y this week" pattern
+
+    **Hard rules:**
+    1. Output exactly 3 FormatRecommendations: 1 with format="carousel", 2 with format="story".
+    2. Each recommendation cites which rubric category the topic fits.
+    3. expected_primary_metric must match: carousel→saves, story→comments.
+  expected_output: A FormatRecommendationBatch with exactly 3 recommendations —
+    one carousel (saves) and two stories (comments) — each citing its rubric match.
   agent: instagram_content_format_specialist_for_b2b_founder_audiences
   context:
   - validate_and_rank
+
 generate_schema_compliant_instagram_briefs:
   description: |-
-    For each (RankedTopic, FormatRecommendation) pair from the previous tasks, produce ONE production-ready InstagramBrief object. Generate AT LEAST {num_briefs} briefs total, all anchored on the user's topic "{topic}" for audience {audience} with primary goal "{goal}".
+    For each (RankedTopic, FormatRecommendation) pair, produce ONE production-ready InstagramBrief object. Generate EXACTLY 3 briefs total — 1 carousel + 2 stories per the format strategist's assignments. Persona is locked: **Indian early-stage SaaS/B2B founders, primary goal = awareness (drives the page's growth from 500K to 1M followers).**
 
-    **Inputs available via task context:**
-    - The top RankedTopics (each with `items: list[ClassifiedItem]` — these are your real source URLs)
-    - One FormatRecommendation per topic (format, expected_primary_metric, reasoning)
+    **Procedure (do this in order, every time):**
 
-    **Procedure (do this in order):**
+    1. **Anchor in sources first.** For each topic, list the cluster's items. Their titles, URLs, and brief_descriptions are your factual ground truth. Populate `source_citations` by COPYING the actual items' urls VERBATIM (character-for-character) — title, url, source — plus a one-sentence relevance_note for each. NEVER write a URL that wasn't in the upstream cluster.
 
-    1. **Anchor in sources first.** For each topic, list the cluster's items. Their titles, URLs, and brief descriptions are your factual ground truth. Populate `source_citations` with the actual items (title, url, source, plus a one-sentence relevance_note for each).
-
-    2. **Write the strategic frame BEFORE the hooks.** Fill in this order:
+    2. **Strategic frame first, then hooks.** Fill in this order:
        - `topic_line`: restate the canonical topic in one tight line.
-       - `one_line_thesis`: the single sentence reason this content exists. Sharp, specific. ("Pre-seed B2B founders lose 30% of equity to vesting clauses they didn't negotiate" beats "Equity is important.")
-       - `target_subaudience`: be specific. "Pre-seed B2B SaaS founders in years 1-2 negotiating their first cap table" — not "founders."
-       - `why_now`: cite the source. "Inc42 reported Kissht's IPO anchor allocation on 2026-04-29; founders are searching for cap-table benchmarks."
-       - `primary_goal`: pick the literal that matches FormatRecommendation.expected_primary_metric.
+       - `one_line_thesis`: the single sentence reason this content exists. Sharp, specific.
+       - `target_subaudience`: be specific — "Pre-seed B2B SaaS founders in years 1-2 negotiating their first cap table" — not just "founders."
+       - `why_now`: cite the source. ("Inc42 reported X on 2026-04-29; founders are searching for benchmarks.")
+       - `primary_goal`: "awareness" — every brief is awareness-driven (the page is growing 500K→1M; awareness is meta-goal).
 
-    3. **Set format + specs.** Use the FormatRecommendation.format. Build `header` as 'Content Brief — Instagram <Format> | Goal: <Goal> | Audience: <subaudience>'. Build `specs` as a pipe-separated string: 'Duration: 30-45s | Aspect Ratio: 9:16 | Hook: 0-3s | Hashtag Count: 5'.
+    3. **Set format + specs.** Use FormatRecommendation.format. Build `header` as 'Content Brief — Instagram <Format> | Goal: Awareness | Audience: Indian early-stage SaaS/B2B founders'. Build `specs`:
+       - Carousel: 'Duration: 8-10 slides | Aspect Ratio: 4:5 | Hook: Slide 1 | Hashtag Count: 5'
+       - Story: 'Duration: 4 frames × 15s | Aspect Ratio: 9:16 | Hook: Frame 1 | Hashtag Count: 1-2'
 
     4. **Fact-check status:** Verified (claim is in source with explicit number/quote), Evergreen (timeless framework), or Unverified (claim is editorial). Always include a one-sentence note.
 
-    5. **Write the hooks LAST but make them BEST.** 3 hooks, each from a different angle (specific-number, contrarian, insider-language are the safest defaults). Each hook ≤15 words. For each: count characters, label the angle, write 1-2 sentences on why it works for the chosen format and primary metric.
+    5. **Hooks (LAST but BEST).** 3 hooks, each from a different angle. Each ≤15 words. For each: count characters, label the angle, write 1-2 sentences on why it works.
 
-    6. **Build the slide / shot blueprint.** Carousel: 5-10 slides, slide 1 = hook, slide N = CTA. Reel: 4-7 shots totalling 30-45s with literal voiceover. Story: 3-5 frames at 15s each. Each slide/shot needs all 5 fields filled — visual_concept, headline, body_copy (or empty), voiceover (literal speech for video, empty for static carousel), design_notes (with hex codes and typography weights).
+    6. **Build the slide / shot blueprint.**
 
-    7. **Write 3 captions:** primary (80-180 words, opens with a Read-More-cut hook), alt_1 (different angle), alt_2 (shorter, punchier). Capture word_count and first_line_hook for each.
+       **For the CAROUSEL brief:**
+       - 5-10 slides. Slide 1 = hook. Slide N = CTA + summary.
+       - Each slide: visual_concept, headline (≤8 words on screen), body_copy (smaller text or empty), voiceover (USUALLY EMPTY for carousels), design_notes (hex codes, typography weights, layout grid).
 
-    8. **Build hashtag tiers:** at least 2 tiers (broad + niche). 3-7 total tags. Each tier carries a one-line rationale. Tags WITHOUT the # prefix.
+       **For the 2 STORY briefs:**
+       - 3-5 frames × 15s each. Frame 1 = hook + interactive sticker (poll, question, slider). Final frame = CTA + DM trigger.
+       - Each frame: visual_concept, headline (≤6 words on-screen sticker text), body_copy (usually empty for stories), voiceover (REQUIRED, see voiceover rules below), design_notes.
 
-    9. **Fill the CTA playbook (5 variants):** primary_cta matched to primary_goal, plus save_cta / share_cta / follow_cta / comment_cta — each one a real, copy-pasteable sentence.
+    7. **VOICEOVER RULES — CRITICAL FOR STORIES (apply mechanically):**
 
-    10. **Audio recommendation:** for reels, name a real trending sound + tempo (BPM estimate) + mood. For static/carousel, "No audio" with a note on whether a Story tease with audio helps.
+       a. **Voiceover MUST be different from on-screen text.** They complement, never duplicate. The on-screen text is a sticker/label/big-bold prompt (≤6 words). The voiceover carries the narrative, the texture, the emotion, the proof.
 
-    11. **Visual design notes:** explicit hex codes (e.g. "#1f4e79 deep blue, #ffffff bg"), typography pairing ("Inter 800 / Inter 400"), layout grid, recurring motif for brand consistency.
+          BAD:
+            on-screen: "Equity mistakes"
+            voiceover: "Equity mistakes"
 
-    12. **Posting strategy:** best time IST, best day, posting frequency for this pillar, Story tease plan if cross-posting.
+          GOOD:
+            on-screen: "Equity mistakes"
+            voiceover: "I've seen 50 founders sign cap tables they regret in year 2. Three of these mistakes happen in week one — before the product even exists."
 
-    13. **Engagement playbook:** specific first-60-min moves — pinned-comment copy, reply themes, follow-up post idea that builds on this brief.
+       b. **Story voiceover tone:** Conversational. Founder-to-founder. Slightly insider. Like texting a friend the lesson, NOT delivering a lecture. NOT robotic. NOT corporate. NOT motivational ("hustle", "grind", "rise and shine" are forbidden).
 
-    14. **Cross-platform adaptation:** concrete drafts of (a) a 1000-1500 char LinkedIn post, (b) a 5-7 tweet X thread starting with the strongest hook, (c) a 1-2 sentence YouTube Shorts hook.
+       c. **Story voiceover length per frame:** 1-3 sentences (15s frame). Punchy. End with a tease that pulls the viewer to the next frame.
 
-    15. **Success criteria:** plain-language saves rate / watch time / reach band targets, grounded in format mechanics.
+       d. **Carousel voiceover:** Usually EMPTY string. Only populate if the carousel will be cross-posted as a Reel/Story-tease — and even then, the voiceover MUST add a layer the on-screen text doesn't have. Never echo the headline.
+
+    8. **Captions (3 drafts):**
+       - primary: 80-180 words, opens with a Read-More-cut hook. Line breaks for readability.
+       - alt_1: different angle, different opening hook.
+       - alt_2: shorter, punchier — for testing.
+       - Capture word_count and first_line_hook for each.
+
+    9. **Hashtag tiers (at least 2: broad + niche):** 3-7 total tags. WITHOUT the # prefix. Each tier carries a one-line rationale.
+
+    10. **CTA playbook (5 variants):** primary_cta matched to primary_goal, plus save_cta / share_cta / follow_cta / comment_cta. Stories should bias the comment_cta (since the format drives comments). Carousels should bias the save_cta and follow_cta.
+
+    11. **Audio recommendation:**
+        - For STORIES: name a real trending sound (e.g. 'Maan Meri Jaan lo-fi, 85 BPM, contemplative') OR 'Original audio with voiceover' if speech-driven. Audio is essential for stories — never empty.
+        - For CAROUSEL: 'No audio' with a note on whether a Story-tease with audio helps reach.
+
+    12. **Visual design notes:** Explicit hex codes (e.g. '#1f4e79 deep blue, #ffffff bg'), typography pairing ('Inter 800 / Inter 400'), layout grid, recurring motif for brand consistency.
+
+    13. **Posting strategy:** Best time IST (8-10pm IST weekdays for B2B founders), best day, frequency, Story tease plan if cross-posting.
+
+    14. **Engagement playbook:** First-60-min moves — pinned-comment copy, reply themes, follow-up post idea. Stories specifically: "respond to every poll vote in the first hour with a personalized DM" type tactics.
+
+    15. **Cross-platform adaptation:** Concrete drafts of (a) 1000-1500 char LinkedIn post, (b) 5-7 tweet X thread, (c) 1-2 sentence YouTube Shorts hook.
+
+    16. **Success criteria:** Plain-language saves rate / comments rate / reach band targets, grounded in format mechanics and the meta-goal of follower growth.
 
     **Hard rules:**
-    - Generate AT LEAST 3 briefs.
-    - Every URL in source_citations MUST come from the upstream RankedTopic.items list. Zero invented URLs.
-    - Zero invented ₹ amounts, growth %s, valuations, or headcounts. If absent in source, frame qualitatively or flag [UNVERIFIED].
-    - Zero motivational filler ("hustle", "grind", "rise and shine", "you got this").
+    - Generate EXACTLY 3 briefs (1 carousel + 2 stories).
+    - Every URL in source_citations MUST be a character-for-character copy of a URL from the upstream RankedTopic.items list. Zero invented URLs. Zero modified URLs.
+    - Zero invented ₹ amounts, growth percentages, valuations, or headcounts.
+    - Zero motivational filler.
+    - For stories: voiceover MUST differ from on-screen text. This is mechanical — a check you do on every single frame before submitting.
     - Output is structured JSON conforming exactly to InstagramBriefBatch — no preamble, no commentary, no markdown fences.
-  expected_output: An InstagramBriefBatch with 3 or more production-ready briefs.
-    Every field of every brief filled. Every source URL traceable to the upstream
-    RankedTopic.items. All hooks, slides/shots, captions, hashtag tiers, CTAs, and
-    the audio / visual / posting / engagement / cross-platform / success_criteria
-    fields completed with the level of specificity an editor needs to ship without
-    further questions.
+  expected_output: An InstagramBriefBatch with exactly 3 production-ready briefs
+    (1 carousel + 2 stories). Every URL traceable to the upstream cluster. Every
+    story voiceover punchy, conversational, and DIFFERENT from on-screen text.
+    Every brief field filled with the level of specificity an editor needs to ship
+    without further questions.
   agent: senior_creative_director_for_instagram_b2b_content___schema_compliant
   context:
   - validate_and_rank
   - choose_format
+
 generate_professional_word_ready_documents:
   description: |-
     Convert the structured Instagram briefs (InstagramBriefBatch) from the previous task into a single, polished HTML document.

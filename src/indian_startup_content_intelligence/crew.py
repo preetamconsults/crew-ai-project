@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 from crewai import LLM, Agent, Crew, Process, Task
@@ -19,6 +20,20 @@ from indian_startup_content_intelligence.tools.instagram_brief_renderer import (
 from indian_startup_content_intelligence.tools.rss_collector import (
     RSSFeedCollectorTool,
 )
+
+
+# Azure OpenAI deployment names. Override via env vars on AMP if your Azure
+# deployments are named differently. The provider is locked to "azure/" — the
+# litellm router uses AZURE_API_KEY / AZURE_API_BASE / AZURE_API_VERSION.
+_AZURE_GPT4O = os.getenv("AZURE_GPT4O_DEPLOYMENT", "gpt-4o")
+_AZURE_GPT4O_MINI = os.getenv("AZURE_GPT4O_MINI_DEPLOYMENT", "gpt-4o-mini")
+
+
+def _make_llm(deployment: str) -> LLM:
+    # Force LiteLLM routing — the "native" CrewAI Azure provider is Azure AI
+    # Inference (different service); for Azure OpenAI we want the LiteLLM
+    # azure/ prefix which uses AZURE_API_KEY / AZURE_API_BASE / AZURE_API_VERSION.
+    return LLM(model=f"azure/{deployment}", is_litellm=True)
 
 
 @CrewBase
@@ -49,14 +64,14 @@ class IndianStartupContentIntelligenceCrew:
                     include_raw_content=False,
                 ),
             ],
-            llm=LLM(model="openai/gpt-4o"),
+            llm=_make_llm(_AZURE_GPT4O),
         )
 
     @agent
     def content_classifier_and_topic_analyzer(self) -> Agent:
         return Agent(
             config=self.agents_config["content_classifier_and_topic_analyzer"],  # type: ignore[index]
-            llm=LLM(model="openai/gpt-4o"),
+            llm=_make_llm(_AZURE_GPT4O),
         )
 
     @agent
@@ -64,21 +79,21 @@ class IndianStartupContentIntelligenceCrew:
         return Agent(
             config=self.agents_config["topic_ranking_and_selection_specialist"],  # type: ignore[index]
             tools=[FileReadTool()],
-            llm=LLM(model="openai/gpt-4o"),
+            llm=_make_llm(_AZURE_GPT4O),
         )
 
     @agent
     def instagram_content_format_specialist_for_b2b_founder_audiences(self) -> Agent:
         return Agent(
             config=self.agents_config["instagram_content_format_specialist_for_b2b_founder_audiences"],  # type: ignore[index]
-            llm=LLM(model="openai/gpt-4o"),
+            llm=_make_llm(_AZURE_GPT4O),
         )
 
     @agent
     def senior_creative_director_for_instagram_b2b_content___schema_compliant(self) -> Agent:
         return Agent(
             config=self.agents_config["senior_creative_director_for_instagram_b2b_content___schema_compliant"],  # type: ignore[index]
-            llm=LLM(model="openai/gpt-4o"),
+            llm=_make_llm(_AZURE_GPT4O),
         )
 
     @agent
@@ -86,7 +101,7 @@ class IndianStartupContentIntelligenceCrew:
         return Agent(
             config=self.agents_config["document_generation_specialist"],  # type: ignore[index]
             tools=[InstagramBriefRendererTool()],
-            llm=LLM(model="openai/gpt-4o-mini"),
+            llm=_make_llm(_AZURE_GPT4O_MINI),
         )
 
     # ---------- Tasks ----------
@@ -136,21 +151,18 @@ class IndianStartupContentIntelligenceCrew:
 
     @after_kickoff
     def _persist_html_locally(self, result):
-        """Save the final HTML to ./output/briefs.html for easy local access.
+        """Save the final HTML to ./output/briefs.html for local convenience.
 
         On CrewAI AMP this is best-effort — the platform doesn't persist files,
-        but the HTML is also returned in `result.raw` (set by the final task)
-        so it's still available via the API. Locally the user just opens the
-        file in a browser or Word.
+        but the HTML is also returned in `result.raw` so it's still available
+        via the API. Locally the user just opens the file in browser or Word.
         """
         try:
             html: str | None = None
 
-            # Prefer the final task's raw output if it's already HTML.
             if result.raw and "<!doctype html" in result.raw.lower():
                 html = result.raw
 
-            # Fallback: regenerate deterministically from the typed brief batch.
             if not html and getattr(result, "tasks_output", None):
                 for task_output in result.tasks_output:
                     pyd = getattr(task_output, "pydantic", None)
@@ -193,5 +205,5 @@ class IndianStartupContentIntelligenceCrew:
             tasks=self.tasks,
             process=Process.sequential,
             verbose=True,
-            chat_llm=LLM(model="openai/gpt-4o-mini"),
+            chat_llm=_make_llm(_AZURE_GPT4O_MINI),
         )

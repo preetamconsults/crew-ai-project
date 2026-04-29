@@ -1,15 +1,17 @@
 #!/usr/bin/env python
 """Entry point for the IndianStartupContentIntelligence crew.
 
-The `inputs` dict defines the API contract on CrewAI AMP — these become the
-parameters exposed via the `/inputs` endpoint and accepted by `/kickoff`.
+This crew is HARDCODED for early-stage Indian SaaS/B2B founder content
+(awareness-driven, follower-growth oriented). No user inputs — every run
+produces 3 briefs (1 carousel + 2 stories) on auto-discovered trending topics.
 
-Required env vars:
-- OPENAI_API_KEY  — for the agent LLMs
-- TAVILY_API_KEY  — for the source scout's targeted web search
-
-On AMP, set both via the deployment dashboard (Settings → Environment).
-Locally, drop them in a `.env` file at the project root.
+Required env vars on CrewAI AMP:
+- AZURE_API_KEY
+- AZURE_API_BASE              (e.g. https://<resource>.openai.azure.com)
+- AZURE_API_VERSION           (e.g. 2024-08-01-preview)
+- AZURE_GPT4O_DEPLOYMENT      (your gpt-4o deployment name; defaults to "gpt-4o")
+- AZURE_GPT4O_MINI_DEPLOYMENT (your gpt-4o-mini deployment name; defaults to "gpt-4o-mini")
+- TAVILY_API_KEY              (free tier at https://tavily.com)
 """
 
 import sys
@@ -19,23 +21,9 @@ from indian_startup_content_intelligence.crew import (
 )
 
 
-def _default_inputs() -> dict:
-    """Sensible defaults so AMP exposes these as the API contract.
-
-    Callers (or AMP API consumers) can override any subset of these by passing
-    their own values. Anything not overridden falls back to the default.
-    """
-    return {
-        "topic": "Indian startup ecosystem this week",
-        "audience": "Indian early-stage B2B SaaS founders (pre-seed to series-A)",
-        "goal": "saves",
-        "num_briefs": 3,
-    }
-
-
 def run():
-    """Run the crew with user-provided (or default) inputs."""
-    IndianStartupContentIntelligenceCrew().crew().kickoff(inputs=_default_inputs())
+    """Run the crew. No inputs — fully autonomous, hardcoded persona."""
+    IndianStartupContentIntelligenceCrew().crew().kickoff(inputs={})
 
 
 def train():
@@ -44,7 +32,7 @@ def train():
         IndianStartupContentIntelligenceCrew().crew().train(
             n_iterations=int(sys.argv[1]),
             filename=sys.argv[2],
-            inputs=_default_inputs(),
+            inputs={},
         )
     except Exception as e:
         raise Exception(f"An error occurred while training the crew: {e}")
@@ -64,7 +52,7 @@ def test():
         IndianStartupContentIntelligenceCrew().crew().test(
             n_iterations=int(sys.argv[1]),
             openai_model_name=sys.argv[2],
-            inputs=_default_inputs(),
+            inputs={},
         )
     except Exception as e:
         raise Exception(f"An error occurred while testing the crew: {e}")

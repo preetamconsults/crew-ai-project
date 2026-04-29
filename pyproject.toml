@@ -5,7 +5,7 @@ description = "indian_startup_content_intelligence using crewAI"
 authors = [{ name = "Your Name", email = "you@example.com" }]
 requires-python = ">=3.11,<3.14"
 dependencies = [
-    "crewai[file-processing,litellm,tools]==1.13.0",
+    "crewai[file-processing,litellm,tools,azure-ai-inference]==1.13.0",
     "feedparser>=6.0.10",
     "tavily-python>=0.5.0",
 ]
