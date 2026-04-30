@@ -13,6 +13,7 @@ from indian_startup_content_intelligence.models import (
     RawItemBatch,
     TopicClusterBatch,
 )
+from indian_startup_content_intelligence.tools.html_uploader import upload_html
 from indian_startup_content_intelligence.tools.instagram_brief_renderer import (
     InstagramBriefRendererTool,
     render_briefs_to_html,
@@ -225,16 +226,25 @@ class IndianStartupContentIntelligenceCrew:
             html_path = output_dir / "briefs.html"
             html_path.write_text(html, encoding="utf-8")
 
+            # Try to upload to a public host so the user gets a real shareable URL.
+            public_url = upload_html(html)
+            url_line = (
+                f"  Public:  {public_url}\n"
+                if public_url
+                else "  Public:  (upload skipped — open the local file instead)\n"
+            )
+
             banner = (
                 "\n"
                 "================================================================\n"
                 "  ✓  YOUR INSTAGRAM BRIEFS ARE READY\n"
                 "================================================================\n"
-                f"  File:   {html_path.resolve()}\n"
-                f"  Briefs: {len(html):,} characters of formatted content\n"
+                f"  File:    {html_path.resolve()}\n"
+                f"{url_line}"
+                f"  Size:    {len(html):,} characters of formatted content\n"
                 "\n"
-                "  → Double-click the file to open it in your browser.\n"
-                "  → Or right-click → Open With → Microsoft Word.\n"
+                "  → Click the public URL to view in browser (shareable).\n"
+                "  → Or open the local file in Microsoft Word.\n"
                 "================================================================\n"
             )
             print(banner)

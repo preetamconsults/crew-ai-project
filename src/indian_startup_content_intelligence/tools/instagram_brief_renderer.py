@@ -18,6 +18,7 @@ from indian_startup_content_intelligence.models import (
     InstagramBrief,
     InstagramBriefBatch,
 )
+from indian_startup_content_intelligence.tools.html_uploader import upload_html
 
 
 _CSS = """
@@ -657,13 +658,26 @@ class InstagramBriefRendererTool(BaseTool):
                 )
         markdown = render_briefs_to_markdown(batch)
         html = render_briefs_to_html(batch)
-        data_url = html_to_data_url(html)
-        # Prepend a clickable link banner — markdown auto-renders this in AMP.
-        banner = (
-            "> 🔗 **[Click here to open the fully-styled HTML version in your browser]"
-            f"({data_url})** — opens a polished, print-ready page with all "
-            "formatting (fonts, colors, tables, hashtag pills). Use this for "
-            "client previews, copy-paste into Word, or sharing.\n\n"
-            "---\n\n"
-        )
+
+        # Upload the HTML to a public file host so the user gets a real,
+        # shareable URL — not a base64 data URL that no chat UI renders cleanly.
+        public_url = upload_html(html)
+
+        if public_url:
+            banner = (
+                f"# 🔗 [📄 View the polished briefs document]({public_url})\n\n"
+                f"**Direct link:** {public_url}\n\n"
+                "_Opens in any browser as a fully-styled page · Imports cleanly "
+                "into Microsoft Word · Share this URL with anyone, no login needed._\n\n"
+                "---\n\n"
+            )
+        else:
+            # Fallback: data URL (works but ugly in chat UIs)
+            data_url = html_to_data_url(html)
+            banner = (
+                f"> 🔗 **[Open the fully-styled HTML]({data_url})**\n\n"
+                "_(Public-host upload failed — paste the link above into your "
+                "browser address bar to view.)_\n\n"
+                "---\n\n"
+            )
         return banner + markdown
