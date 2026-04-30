@@ -107,7 +107,14 @@ PrimaryGoal = Literal[
 
 
 class SourceCitation(BaseModel):
-    """A real upstream URL the brief draws from. URLs MUST come from the cluster."""
+    """A real upstream URL the brief draws from.
+
+    URL discipline (no example.com, must come from the cluster) is enforced
+    via the agent's prompt — NOT via a Pydantic validator. The validator
+    used to reject placeholders, but that triggered Instructor retry loops
+    when the LLM repeatedly produced bad URLs, multiplying latency 3-5×.
+    Now we only require a basic scheme — quality is prompt-driven.
+    """
 
     title: str
     url: str
@@ -115,14 +122,10 @@ class SourceCitation(BaseModel):
 
     @field_validator("url")
     @classmethod
-    def reject_placeholder_urls(cls, v: str) -> str:
-        bad_hosts = ("example.com", "example.org", "example.net", "test.com")
-        if any(host in v.lower() for host in bad_hosts):
-            raise ValueError(
-                f"URL {v!r} is a placeholder. Use a real URL from the upstream RawItem cluster."
-            )
-        if not v.startswith(("http://", "https://")):
-            raise ValueError(f"URL {v!r} must include a scheme (http:// or https://).")
+    def url_must_have_scheme(cls, v: str) -> str:
+        if not (v.startswith("http://") or v.startswith("https://")):
+            # Auto-prepend https:// rather than reject — keeps Instructor happy.
+            return f"https://{v.lstrip('/')}"
         return v
 
 

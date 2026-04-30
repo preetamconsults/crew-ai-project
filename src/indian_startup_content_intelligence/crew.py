@@ -142,6 +142,12 @@ class IndianStartupContentIntelligenceCrew:
             # 12000 max_tokens — the structured brief output is large
             # (3 briefs × ~14 fields each); default 4096 caused truncation.
             llm=_make_llm(_AZURE_GPT4O, max_tokens=12000),
+            # Hard cap retries so we never get stuck in a 10+ min retry loop.
+            max_retry_limit=1,
+            # Cap total iterations the agent can take across all its actions.
+            max_iter=8,
+            # Hard wall-clock cap — agent fails fast rather than burning tokens.
+            max_execution_time=240,  # 4 minutes
         )
 
     @agent
