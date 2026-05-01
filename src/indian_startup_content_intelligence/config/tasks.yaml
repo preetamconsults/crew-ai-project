@@ -156,19 +156,96 @@ generate_carousel_brief:
       _Why it works: <1 sentence>_
 
     ### Slide Blueprint
-    | # | Slide | Visual + Design | Headline | Voiceover | Transition |
-    |---|---|---|---|---|---|
-    | 1 | Slide 1 | <visual concept; design: hex colors, typography, layout grid, motion> | <≤8 words> | (empty) | N/A |
-    | 2 | Slide 2 | <visual> | <headline> | (empty) | N/A |
-    | 3 | Slide 3 | <visual> | <headline> | (empty) | N/A |
-    | 4 | Slide 4 | <visual> | <headline> | (empty) | N/A |
-    | 5 | Slide 5 | <visual> | <headline> | (empty) | N/A |
-    | 6 | Slide 6 | <visual> | <headline> | (empty) | N/A |
-    | 7 | Slide 7 | <visual> | <headline> | (empty) | N/A |
-    | 8 | Slide 8 | <visual> | <headline> | (empty) | N/A |
-    | 9 | Slide 9 | <visual> | <headline summary + Follow CTA> | (empty) | N/A |
 
-    Slide 1 = hook. Slide 2 = stakes / why this matters. Slides 3-8 = framework, one step per slide, each with a real named Indian company example. Final slide = summary + Follow CTA. Voiceover column empty.
+    **Slide arc (3 lines — name the carousel's narrative shape):**
+    1. <opening: hook + stakes that earn the swipe>
+    2. <middle: step-by-step framework, one step per slide, each anchored to a named Indian company>
+    3. <closing: recap + Follow / Save CTA>
+
+    **Specs:** 9 slides · 1080×1350 (4:5) · 12-column grid, 24px gutter, 64px outer margin · Inter Display 800 headlines / Inter SemiBold body · burned-in text (no audio).
+
+    ---
+
+    #### Slide 1 · Hook (earn the swipe)
+    - **Visual concept:** <2–3 sentences of literal visual content — what's on screen, layout, named real Indian specifics. e.g. "Razorpay logo top-left, ₹800 Cr Series D grabber headline centered, soft Razorpay-blue gradient backdrop, swipe-right arrow bottom-right.">
+    - **Design:** <hex palette (e.g. "Razorpay blue #095DCE on bone #F5F1E8 with accent #FF5A1F") · typography (Inter Display 800, 72pt / 1.1 line-height) · layout (centered, generous negative space)>
+    - **Headline (≤8 words):** "<text>"
+    - **Sub / body text (optional, ≤20 words):** "<supporting line — number + name>"
+    - **Source credit:** <e.g. "Data: Inc42 funding tracker, 2024">
+
+    ---
+
+    #### Slide 2 · Stakes (why this matters NOW)
+    - **Visual concept:** <...>
+    - **Design:** <...>
+    - **Headline (≤8 words):** "<...>"
+    - **Sub / body text:** "<...>"
+    - **Source credit:** <...>
+
+    ---
+
+    #### Slide 3 · Step 1 (named Indian company example)
+    - **Visual concept:** <name a specific real Indian company example for this step — e.g. "Whatfix's 2018 Series A diligence stat card; lower-third shows ₹X Cr ARR.">
+    - **Design:** <hex · type · layout>
+    - **Headline (≤8 words):** "<text — the step itself>"
+    - **Sub / body text:** "<the company example with a number>"
+    - **Source credit:** <...>
+
+    ---
+
+    #### Slide 4 · Step 2 (different Indian company)
+    - **Visual concept:** <name a DIFFERENT real Indian company example>
+    - **Design:** <...>
+    - **Headline (≤8 words):** "<...>"
+    - **Sub / body text:** "<...>"
+    - **Source credit:** <...>
+
+    ---
+
+    #### Slide 5 · Step 3 (different Indian company)
+    - **Visual concept:** <name a DIFFERENT real Indian company example>
+    - **Design:** <...>
+    - **Headline (≤8 words):** "<...>"
+    - **Sub / body text:** "<...>"
+    - **Source credit:** <...>
+
+    ---
+
+    #### Slide 6 · Step 4
+    - **Visual concept:** <...>
+    - **Design:** <...>
+    - **Headline (≤8 words):** "<...>"
+    - **Sub / body text:** "<...>"
+    - **Source credit:** <...>
+
+    ---
+
+    #### Slide 7 · Step 5 (the contrarian / counter-intuitive one)
+    - **Visual concept:** <this is the screenshot-able, save-able slide; design accordingly>
+    - **Design:** <...>
+    - **Headline (≤8 words):** "<the contrarian line>"
+    - **Sub / body text:** "<...>"
+    - **Source credit:** <...>
+
+    ---
+
+    #### Slide 8 · Recap (3-beat framework summary)
+    - **Visual concept:** <stack the 3 most-important steps as a one-glance summary card so the slide is screenshot-able on its own>
+    - **Design:** <...>
+    - **Headline (≤8 words):** "<the framework name + word "playbook" / "blueprint">"
+    - **Sub / body text:** "<3-line summary of the steps>"
+    - **Source credit:** <optional>
+
+    ---
+
+    #### Slide 9 · CTA (Follow + Save + DM trigger)
+    - **Visual concept:** <large founder face crop OR brand mark; CTA copy dominates the frame>
+    - **Design:** <high-contrast accent for the CTA word; arrow / hand pointer toward profile pic top-left>
+    - **Headline (≤8 words):** "Save · Follow · DM '<TRIGGER>'"
+    - **Sub / body text:** "<one-line invite, e.g. 'Daily Indian SaaS playbooks. Follow @<handle>.'>"
+    - **Source credit:** <not applicable>
+
+    ---
 
     ### Production Handoff
 
@@ -261,7 +338,9 @@ generate_carousel_brief:
 
     **HARD RULES:**
     - Output exactly ONE brief block, the carousel.
-    - ≥ 8 slide rows in the table. Every slide a distinct insight.
+    - **Slide Blueprint uses per-slide BLOCKS, not a markdown table.** ≥ 9 slide blocks (Slide 1 Hook through Slide 9 CTA), each with all 5 labelled fields filled with specifics. NEVER output the slide blueprint as a `| pipe | table |` — tables collapse on phones and the AMP renderer flattens them into pipe noise.
+    - Slides 3–7 each name a DIFFERENT real Indian company with a number attached.
+    - Every "Visual concept" is 2–3 sentences of literal content with named real specifics. Every "Design" line gives at least 1 hex colour AND 1 typography choice AND 1 layout note.
     - All 3 caption drafts complete (long 140-180w, medium 60-90w, short ≤30w).
     - ≥ 3 named Indian companies, ≥ 2 specific ₹ amounts or percentages, ≥ 1 named framework / playbook / role per brief.
     - All 5 engagement-playbook components filled with specifics.
@@ -271,7 +350,7 @@ generate_carousel_brief:
     - Every line passes the like-save-share test, or it gets cut.
     - Output is the markdown brief content directly — no preamble, no postamble, no JSON, no code fence wrapping the whole output.
   expected_output: |-
-    A single markdown brief block (heading "## Brief #1:") for the carousel topic, ending with "---". Contains: header strip, sources, 3 hooks with reasoning, slide blueprint table with ≥8 rows, a complete Production Handoff section (Producer's 4 next actions with owner+deadline, pre-production checklist, build kit, build day flow, post-build checklist, deliverables, approval gate — every sub-block concrete), three caption drafts (long/medium/short), tiered hashtags, 4-CTA stack, audio, posting strategy, and a 5-part engagement playbook. ≥ 3 named Indian companies, ≥ 2 specific numbers, ≥ 1 named framework. Zero example.com, zero placeholders.
+    A single markdown brief block (heading "## Brief #1:") for the carousel topic, ending with "---". Contains: header strip, sources, 3 hooks with reasoning, a Slide Blueprint built as ≥9 per-slide blocks (NOT a markdown table — each slide is its own labelled block with Visual concept, Design, Headline, Sub/body, Source credit), Slides 3–7 each naming a different real Indian company with a number, a complete Production Handoff section (Producer's 4 next actions with owner+deadline, pre-production checklist, build kit, build day flow, post-build checklist, deliverables, approval gate — every sub-block concrete), three caption drafts (long/medium/short), tiered hashtags, 4-CTA stack, audio, posting strategy, and a 5-part engagement playbook. ≥ 3 named Indian companies, ≥ 2 specific numbers, ≥ 1 named framework. Zero example.com, zero placeholders.
   agent: senior_creative_director_for_instagram_b2b_content___schema_compliant
   context:
   - validate_and_rank
