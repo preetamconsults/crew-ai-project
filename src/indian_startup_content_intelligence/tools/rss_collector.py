@@ -92,17 +92,19 @@ class RSSFeedCollectorInput(BaseModel):
 class RSSFeedCollectorTool(BaseTool):
     """Fetches recent articles across multiple RSS feeds.
 
-    Returns a JSON array of {title, brief_description, url, source, published}.
-    Items lacking a publish timestamp are kept (some feeds omit it) but
-    items older than `hours_back` are dropped when a timestamp is present.
+    Returns a JSON array of items with these fields per item: title,
+    brief_description, url, source, published. Items lacking a publish
+    timestamp are kept (some feeds omit it) but items older than
+    `hours_back` are dropped when a timestamp is present.
     """
 
     name: str = "rss_feed_collector"
     description: str = (
         "Fetches recent articles from one or more RSS feeds and returns a "
-        "JSON list of {title, brief_description, url, source, published} "
-        "items. Use this to collect Indian startup ecosystem content from "
-        "Inc42, YourStory, Entrackr, ET Tech, etc."
+        "JSON list of items. Each item has the fields: title, "
+        "brief_description, url, source, published. Use this to collect "
+        "Indian startup ecosystem content from Inc42, YourStory, Entrackr, "
+        "ET Tech, etc."
     )
     args_schema: Type[BaseModel] = RSSFeedCollectorInput
 
