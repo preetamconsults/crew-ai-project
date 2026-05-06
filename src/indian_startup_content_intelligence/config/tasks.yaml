@@ -381,6 +381,8 @@ generate_reel_part1_brief:
 
     **Story Blueprint design philosophy:** This is the centerpiece of the brief. A non-technical founder must be able to read it and visualise the reel cut by cut without asking a question. Every shot gets its own block with eight labelled fields — story beat, camera, scene, design, sticker, voiceover, emotion, transition. Specific named props, real Indian B-roll references, hex colours, lens choices, frame counts. NO single-sentence shots.
 
+    **VOICEOVER IS THE CONTENT — NOT THE VISUALS.** This reel is voiceover-driven. The visuals support the words; the words carry the teaching. Every shot's voiceover must be 3–5 full conversational sentences (targeting 5–8 seconds of speech per shot). Total voiceover across all 6 shots must be minimum 150 words — enough to fill a genuine 30-second spoken narrative. A voiceover of 1 sentence is a placeholder, not content. Write it as if you are the founder speaking directly to camera, teaching a friend something they genuinely didn't know.
+
     **Output the brief using EXACTLY this markdown template (output ONLY this single brief block — no preamble, no postamble):**
 
     ```
@@ -405,79 +407,82 @@ generate_reel_part1_brief:
     2. <middle escalation — how the stakes raise>
     3. <closing beat — the unresolved question that hands off to Part 2>
 
-    **Runtime:** 32–40s across 6 shots · Pacing: 4–7s cuts, tightest around the reveal · Aspect: 9:16 vertical · Captions burned-in (97% watch with sound off in IST mornings).
+    **Runtime:** 30–45s across 6 shots · **Voiceover target: minimum 150 words total across all 6 shots (≈30 seconds of continuous speech at 130 WPM)** · Pacing: 4–7s cuts, tightest around the reveal · Aspect: 9:16 vertical · Captions burned-in (97% watch with sound off in IST mornings).
 
     ---
 
-    #### Shot 1 · 0.0–4.0s · Hook (Pattern interrupt)
+    #### Shot 1 · 0.0–5.0s · Hook (Pattern interrupt)
     - **Story beat:** <1 line: what this shot does narratively — e.g. "Name the founder's hidden anxiety in the first 2 seconds so the algorithm holds the watch.">
     - **Camera:** <lens · framing · angle · height · light direction — e.g. "35mm equivalent, tight close-up, slight Dutch angle for unease, phone at chest height, soft window light from camera-right.">
     - **Scene:** <2–3 lines of literal visual content — wardrobe, props, location, B-roll cut-ins. Name real assets if relevant. e.g. "Founder in plain crew-neck tee, mid-30s, seated in coworking space (BHIVE Bengaluru aesthetic). Cut-in B-roll: Slack screenshot showing investor reply 'Let's revisit in Q3', overlaid with timestamp.">
     - **Design:** <hex colours · typography · sticker motion · grain — e.g. "Ink #0A0A0A on bone #F5F1E8. Inter Display 800 for sticker, SemiBold for body. Sticker snap-in 12-frame ease-out. 8% film grain.">
     - **Sticker (≤6 words):** "<sticker text>"
-    - **Voiceover (1–3 sentences, MUST differ from sticker):** "<conversational founder-to-founder voice; specific not generic; ends pulling into shot 2>"
+    - **Voiceover (3–5 sentences, MUST differ from sticker, ~5–7s of speech):** "<Hook the viewer with the specific anxiety or pattern in sentence 1. Quantify it with a number or ratio in sentence 2. Name why this is a harder problem than founders assume in sentence 3. Pull to the next shot in sentence 4-5. Write as a founder speaking to a friend — not a narrator, not a coach. e.g. 'Most founders discover their sales hire isn't working at month 9. By then they've spent ₹40–60L in salary and lost 2 quarters of ARR runway. The signals were there at month 3 — but nobody told you what to look for. That's exactly what I'm going to walk you through today.'>"
     - **Emotion:** <Tension | Curiosity | Confrontation | Confidence | Calm>
     - **Transition out:** <e.g. "Whip-pan right, 6-frame motion blur" or "Match-cut on phone screen" or "Hard cut">
 
     ---
 
-    #### Shot 2 · 4.0–9.0s · Stakes
-    - **Story beat:** <...>
+    #### Shot 2 · 5.0–12.0s · Stakes
+    - **Story beat:** <name exactly what cost or consequence this shot makes visceral — the founder must feel the weight of getting this wrong>
     - **Camera:** <...>
-    - **Scene:** <...>
+    - **Scene:** <2–3 lines of literal visual content — what prop, dashboard, or B-roll makes the stakes visible on screen>
     - **Design:** <...>
     - **Sticker (≤6 words):** "<...>"
-    - **Voiceover (1–3 sentences, ≠ sticker):** "<...>"
+    - **Voiceover (3–5 sentences, ≠ sticker, ~5–7s of speech):** "<Explain the specific cost of missing this signal in 3–5 sentences. Give a concrete number or ratio that makes the cost real (e.g. burn rate, months of runway, ARR multiple). Name the second-order consequence — not just what breaks, but what breaks next as a result. End by escalating the tension so the viewer needs to know what to watch for.>"
     - **Emotion:** <...>
     - **Transition out:** <...>
 
     ---
 
-    #### Shot 3 · 9.0–15.0s · Tension build
-    - **Story beat:** <...>
+    #### Shot 3 · 12.0–20.0s · Tension build
+    - **Story beat:** <name the counter-intuitive or non-obvious observation that escalates the dilemma — the thing the founder assumed was fine but isn't>
     - **Camera:** <...>
-    - **Scene:** <...>
+    - **Scene:** <2–3 lines of literal visual content — what's on screen that makes this tension visible>
     - **Design:** <...>
     - **Sticker (≤6 words):** "<...>"
-    - **Voiceover (1–3 sentences, ≠ sticker):** "<...>"
+    - **Voiceover (3–5 sentences, ≠ sticker, ~5–7s of speech):** "<Surface the non-obvious layer of the dilemma in 3–5 sentences. State what most founders believe is true, then reveal why that belief is wrong or incomplete. Give the specific data point or pattern that breaks the assumption. The viewer should feel a jolt of recognition — 'I've been thinking about this wrong'. End pulling into the dilemma shot.>"
     - **Emotion:** <...>
     - **Transition out:** <...>
 
     ---
 
-    #### Shot 4 · 15.0–22.0s · The dilemma
-    - **Story beat:** <...>
+    #### Shot 4 · 20.0–28.0s · The dilemma
+    - **Story beat:** <name the exact fork in the road — the two paths the founder can take, and why neither feels safe>
     - **Camera:** <...>
-    - **Scene:** <...>
+    - **Scene:** <2–3 lines of literal visual content — what represents the choice on screen, e.g. two columns on a whiteboard, two Notion pages, a split screen>
     - **Design:** <...>
     - **Sticker (≤6 words):** "<...>"
-    - **Voiceover (1–3 sentences, ≠ sticker):** "<...>"
+    - **Voiceover (3–5 sentences, ≠ sticker, ~6–8s of speech):** "<Name the two sides of the dilemma explicitly in 3–5 sentences. State what happens if the founder chooses path A (with a specific consequence). State what happens if they choose path B (with a different specific consequence). Make clear that the standard advice doesn't resolve this — the founder genuinely needs a framework. End with the question that hangs in the air for Part 2.>"
     - **Emotion:** <...>
     - **Transition out:** <...>
 
     ---
 
-    #### Shot 5 · 22.0–30.0s · Cliffhanger
-    - **Story beat:** <...>
+    #### Shot 5 · 28.0–35.0s · Cliffhanger
+    - **Story beat:** <plant the unresolved question that makes not watching Part 2 feel like leaving money on the table>
     - **Camera:** <...>
-    - **Scene:** <...>
+    - **Scene:** <2–3 lines of literal visual content — what signals 'this isn't resolved yet'>
     - **Design:** <...>
     - **Sticker (≤6 words):** "<...>"
-    - **Voiceover (1–3 sentences, ≠ sticker):** "<...>"
+    - **Voiceover (3–5 sentences, ≠ sticker, ~5–7s of speech):** "<Land the cliffhanger in 3–5 sentences. Restate the unresolved question with a sharper edge — make the founder feel the cost of not knowing the answer. Hint that the framework exists but don't give it yet. Name one specific thing Part 2 will reveal (a ratio, a stage-gate, a question) to give the viewer a concrete reason to return. End with a verbal tease of tomorrow's reel.>"
     - **Emotion:** <...>
     - **Transition out:** <...>
 
     ---
 
-    #### Shot 6 · 30.0–35.0s · Part 2 teaser (final)
+    #### Shot 6 · 35.0–42.0s · Part 2 teaser (final)
     - **Story beat:** Hand off to Part 2. Name what Part 2 will reveal so the viewer needs to come back tomorrow.
     - **Camera:** <e.g. "Close-up on hand sliding cap-table doc out of frame; cut to founder eye-line, full-frontal locked-off shot.">
     - **Scene:** <visual that signals "to be continued" — calendar showing tomorrow's date, "Part 2" lower-third, etc.>
     - **Design:** <colours, typography, sticker motion, end-card layout>
     - **Sticker (≤6 words):** "Tomorrow: Part 2 ↓" _(or topic-specific equivalent)_
-    - **Voiceover (1–3 sentences, ≠ sticker, MUST explicitly preview Part 2):** "<e.g. 'Tomorrow I'll show you the 3 numbers from Razorpay's last raise that decide which side wins.'>"
+    - **Voiceover (3–5 sentences, ≠ sticker, MUST explicitly preview Part 2, ~5–7s of speech):** "<Deliver the Part 2 tease in 3–5 sentences — specific enough that the viewer knows exactly what they'll learn, compelling enough that they can't skip it. Name the framework, the number of steps, or the decision rule Part 2 will deliver. Tell them when to expect it. End with a direct instruction (follow, turn on notifications, come back tomorrow). e.g. 'Tomorrow I'm going to give you the 3-question framework that makes this call obvious — no gut feel, no guessing. It's the same diagnostic I've seen used by founders who got this right at ₹2 Cr ARR. Follow me and I'll see you tomorrow.'>"
     - **Emotion:** Anticipation
     - **Transition out:** End-card hold for 1.0s.
+
+    **Full voiceover script (REQUIRED — stitch all 6 shot voiceovers into one continuous paragraph):**
+    > <Write the complete spoken script from Shot 1 through Shot 6 as a single flowing paragraph of 150–200 words. This is what the founder reads aloud from a teleprompter or memorises. Every sentence must be conversational — not a script that sounds written. Read it out loud yourself: if it takes less than 28 seconds to say, it is too short. Rewrite until it fills 30–40 seconds of natural speech.>
 
     ### Production Handoff
 
@@ -563,7 +568,7 @@ generate_reel_part1_brief:
     - **NO SOURCES IN OUTPUT.** The brief NEVER includes a Sources block, URLs, citations, or Fact-check line. Self-contained tactical framework only.
     - ≥ 6 shot blocks. Every shot has all 8 labelled fields filled with specifics — no "TBD", no one-line stand-ins.
     - Final shot's sticker AND voiceover both EXPLICITLY reference Part 2.
-    - Every voiceover differs from its sticker. Sticker ≤6 words. Voiceover 1–3 conversational sentences.
+    - **Voiceover is the content, not the visuals.** Every shot voiceover: 3–5 sentences, ≠ sticker, targeting 5–8 seconds of natural speech. Single-sentence voiceovers = automatic rewrite. Total voiceover across all 6 shots: minimum 150 words. The Full Voiceover Script block is mandatory and must read as a continuous 30–40 second spoken narrative.
     - Every "Scene" line names at least one specific real prop, location, or B-roll reference (no company name required — props can be a Notion doc, a cap-table screenshot, a whiteboard, a monitor showing a Stripe dashboard, etc.).
     - Every "Design" line gives at least 1 hex colour AND 1 typography choice AND 1 motion note.
     - **Production Handoff section is mandatory and complete:** Producer's 4 next actions each have an OWNER + DEADLINE; all 7 sub-blocks filled with concrete specifics.
@@ -573,7 +578,7 @@ generate_reel_part1_brief:
     - Zero example.com, zero placeholder names, zero motivational filler, zero URLs of any kind, zero company-as-subject framing.
     - Output is the markdown brief content directly — no preamble, no postamble, no JSON, no outer code fence.
   expected_output: |-
-    A single markdown brief block (heading "## Brief #2:") for the Reel Part 1 (Setup) topic, ending with "---". The brief is CONCEPT-LED and FOUNDER-FOCUSED (title is a tactical dilemma, not a company; subject is the founder's reasoning). NO Sources block, NO URLs, NO citations, NO Fact-check line — self-contained tactical framework. Contains: compact header strip with Concept being taught + Thesis + Founder's reflection question; 3 hooks with reasoning; a Story Blueprint with a 3-line dramatic arc + runtime line + ≥6 shot blocks each carrying 8 labelled fields (story beat, camera, scene, design, sticker, voiceover, emotion, transition); final shot explicitly teases Part 2; every voiceover differs from its sticker; every scene names a real prop/location/B-roll (no company name required); every design line gives hex+type+motion; companies absent by default with max 1–2 light references and never as a shot subject. Complete Production Handoff section. Three caption drafts (each ending with a Part 2 tease), tiered hashtags, 4-CTA stack, Distribution block, and a 5-part engagement playbook. ≥ 1 named framework, ≥ 2 specific numbers/ratios/timeframes, ≥ 1 actionable founder reflection. Zero example.com, zero placeholders, zero URLs of any kind, zero company-as-subject framing.
+    A single markdown brief block (heading "## Brief #2:") for the Reel Part 1 (Setup) topic, ending with "---". The brief is CONCEPT-LED and FOUNDER-FOCUSED (title is a tactical dilemma, not a company; subject is the founder's reasoning). NO Sources block, NO URLs, NO citations, NO Fact-check line — self-contained tactical framework. Contains: compact header strip with Concept being taught + Thesis + Founder's reflection question; 3 hooks with reasoning; a Story Blueprint with a 3-line dramatic arc + runtime line (minimum 150 words total voiceover / ≈30 seconds of speech) + ≥6 shot blocks each carrying 8 labelled fields (story beat, camera, scene, design, sticker, voiceover of 3–5 sentences, emotion, transition) + a Full Voiceover Script block of 150–200 words; final shot explicitly teases Part 2; every voiceover is 3–5 sentences differing from its sticker; every scene names a real prop/location/B-roll; every design line gives hex+type+motion; companies absent by default with max 1–2 light references and never as a shot subject. Complete Production Handoff section. Three caption drafts (each ending with a Part 2 tease), tiered hashtags, 4-CTA stack, Distribution block, and a 5-part engagement playbook. ≥ 1 named framework, ≥ 2 specific numbers/ratios/timeframes, ≥ 1 actionable founder reflection. Zero example.com, zero placeholders, zero URLs of any kind, zero company-as-subject framing.
   agent: senior_creative_director_for_instagram_b2b_content___schema_compliant
   context:
   - validate_and_rank
@@ -596,6 +601,8 @@ generate_reel_part2_brief:
     **Read Part 1's brief from upstream context** (`generate_reel_part1_brief`) — your opening voiceover and caption must callback Part 1's SPECIFIC question / framing. Do NOT write a generic "Yesterday I asked..." — quote or paraphrase Part 1's actual setup line. The reader of Part 2 must feel a clean handoff from yesterday's reel.
 
     **Story Blueprint design philosophy:** This is the centerpiece of the brief. A non-technical founder must be able to read it and visualise the reel cut by cut without asking a question. Every shot gets its own block with eight labelled fields — story beat, camera, scene, design, sticker, voiceover, emotion, transition. Specific named props, real Indian B-roll references, hex colours, lens choices, frame counts. NO single-sentence shots.
+
+    **VOICEOVER IS THE CONTENT — NOT THE VISUALS.** This reel is voiceover-driven. The visuals support the words; the words carry the teaching. Every shot's voiceover must be 3–5 full conversational sentences (targeting 5–8 seconds of speech per shot). Total voiceover across all 6 shots must be minimum 150 words — enough to fill a genuine 30-second spoken narrative. A voiceover of 1 sentence is a placeholder, not content. Write it as if you are the founder speaking directly to camera, teaching a friend something they genuinely didn't know.
 
     **Output the brief using EXACTLY this markdown template (output ONLY this single brief block — no preamble, no postamble):**
 
@@ -621,79 +628,82 @@ generate_reel_part2_brief:
     2. <middle — the 3 elements of the framework: ratio / question / decision rule per element>
     3. <closing — DM trigger and follow CTA>
 
-    **Runtime:** 32–40s across 6 shots · Pacing: 4–7s cuts, slowest at the framework reveal · Aspect: 9:16 vertical · Captions burned-in.
+    **Runtime:** 30–45s across 6 shots · **Voiceover target: minimum 150 words total across all 6 shots (≈30 seconds of continuous speech at 130 WPM)** · Pacing: 4–7s cuts, slowest at the framework reveal · Aspect: 9:16 vertical · Captions burned-in.
 
     ---
 
-    #### Shot 1 · 0.0–4.0s · "Yesterday I asked…" callback
+    #### Shot 1 · 0.0–5.0s · "Yesterday I asked…" callback
     - **Story beat:** Re-anchor the viewer in Part 1's question in the first 2 seconds. A fresh viewer who skipped Part 1 must still understand. A return viewer must feel "here it comes."
     - **Camera:** <e.g. "Tight close-up, locked-off, eye-line; 35mm equivalent; phone at chest height; soft window light camera-right.">
     - **Scene:** <2–3 lines of literal visual content. MUST include a visual callback to Part 1 — same wardrobe, same location, same prop, OR a frame of Part 1's final shot inset top-right. Name real props/B-roll. e.g. "Founder in same plain crew-neck tee as Part 1, same coworking corner. Bottom third inset shows yesterday's Part 1 final frame for 1.5s.">
     - **Design:** <hex colours · typography · sticker motion · grain — e.g. "Same palette as Part 1: ink #0A0A0A on bone #F5F1E8. Inter Display 800. Sticker snap-in 12-frame ease-out. Inset frame has 4px ink border.">
     - **Sticker (≤6 words):** "Yesterday I asked…" _(or topic-specific paraphrase, e.g. "₹2 Cr or break even?")_
-    - **Voiceover (1–3 sentences, MUST differ from sticker, MUST paraphrase Part 1's actual question and promise the answer):** "<e.g. 'Yesterday I asked you whether to take the ₹2 Cr term sheet or stay default-alive. Today I'll show you the 3 numbers from Razorpay's first round that make the call obvious.'>"
+    - **Voiceover (3–5 sentences, MUST differ from sticker, MUST paraphrase Part 1's actual question and promise the answer, ~5–7s of speech):** "<Open by recalling Part 1's exact question in conversational language (not generic). State what you promised to answer in 1 sentence. Acknowledge that this question has no obvious answer — that's why it matters. Tell the viewer you're going to give them a 3-part framework, not a opinion. e.g. 'Yesterday I asked you: if your sales hire has been in role for 6 months and hasn't closed a deal, is the problem them — or is it your stage? I promised I'd give you the framework that makes that call obvious. Most people will tell you to trust your gut. I'm going to give you 3 numbers instead.'>"
     - **Emotion:** Anticipation / Confidence
     - **Transition out:** <e.g. "Match-cut from founder's eye-line to whiteboard; 6-frame motion blur">
 
     ---
 
-    #### Shot 2 · 4.0–9.0s · Reframe / setup the answer
-    - **Story beat:** <name what reframe the viewer needs before the framework lands>
+    #### Shot 2 · 5.0–13.0s · Reframe / setup the answer
+    - **Story beat:** <name the mental model shift the viewer needs before the framework lands — the reframe that makes the 3 elements feel obvious once heard>
     - **Camera:** <...>
-    - **Scene:** <...>
+    - **Scene:** <2–3 lines of literal visual content — what prop or visual represents the reframe, e.g. a whiteboard with a 2×2 matrix, a Notion page titled with the reframe concept>
     - **Design:** <...>
     - **Sticker (≤6 words):** "<...>"
-    - **Voiceover (1–3 sentences, ≠ sticker):** "<...>"
+    - **Voiceover (3–5 sentences, ≠ sticker, ~5–7s of speech):** "<Deliver the reframe in 3–5 sentences. Name the wrong mental model most founders use. Explain specifically why it fails (with a number or a consequence). Introduce the correct framing in one clean sentence. End by telling the viewer you're about to give them the 3 elements of the framework.>"
     - **Emotion:** <...>
     - **Transition out:** <...>
 
     ---
 
-    #### Shot 3 · 9.0–16.0s · Framework element 1 (the first non-obvious move)
+    #### Shot 3 · 13.0–22.0s · Framework element 1 (the first non-obvious move)
     - **Story beat:** First of 3 framework elements. Slow the cut here so it lands. The element is a specific tactical move, ratio, or question — NOT a company example.
     - **Camera:** <...>
     - **Scene:** <literal scene supporting element 1 — could be a Notion doc reveal, a whiteboard ratio, a phone screen showing a Stripe dashboard, the founder writing a number — props/B-roll that visualise the element, no company name required>
     - **Design:** <...>
     - **Sticker (≤6 words):** "<the element name in ≤6 words>"
-    - **Voiceover (1–3 sentences, ≠ sticker):** "<the founder-to-founder explanation of the element + when to apply it>"
+    - **Voiceover (3–5 sentences, ≠ sticker, ~6–8s of speech — this is the teaching moment):** "<Teach framework element 1 fully in 3–5 sentences. State the principle or ratio clearly. Explain exactly how the founder applies it — what they measure, what threshold triggers a decision. Name the failure mode: what happens when founders skip this check. End by connecting to element 2 coming next.>"
     - **Emotion:** Confidence
     - **Transition out:** <...>
 
     ---
 
-    #### Shot 4 · 16.0–22.0s · Framework element 2 (the second non-obvious move)
-    - **Story beat:** <name what this element adds to element 1>
+    #### Shot 4 · 22.0–30.0s · Framework element 2 (the second non-obvious move)
+    - **Story beat:** <name what this element adds to element 1 — it should feel like a progression, not a repetition>
     - **Camera:** <...>
-    - **Scene:** <literal scene for element 2 — different visual texture from Shot 3>
+    - **Scene:** <literal scene for element 2 — different visual texture from Shot 3, e.g. if Shot 3 used a whiteboard number, Shot 4 uses a phone screen or B-roll cutaway>
     - **Design:** <...>
     - **Sticker (≤6 words):** "<the element name>"
-    - **Voiceover (1–3 sentences, ≠ sticker):** "<the explanation>"
+    - **Voiceover (3–5 sentences, ≠ sticker, ~6–8s of speech):** "<Teach framework element 2 fully in 3–5 sentences. State what this element measures or decides that element 1 doesn't. Give the specific test or diagnostic. Name what founders typically overlook here and why that's costly. End bridging to element 3.>"
     - **Emotion:** <...>
     - **Transition out:** <...>
 
     ---
 
-    #### Shot 5 · 22.0–28.0s · Framework element 3 (the contrarian / screenshot one)
+    #### Shot 5 · 30.0–38.0s · Framework element 3 (the contrarian / screenshot one)
     - **Story beat:** Land the third element with the contrarian / counter-intuitive line. This is the most save-able sentence of the reel — the line founders will screenshot and send to a co-founder.
     - **Camera:** <...>
     - **Scene:** <literal scene for element 3 — could be a 2-column "What founders THINK / What's actually TRUE" lower-third>
     - **Design:** <...>
     - **Sticker (≤6 words):** "<the contrarian element>"
-    - **Voiceover (1–3 sentences, ≠ sticker):** "<the screenshot-able line>"
+    - **Voiceover (3–5 sentences, ≠ sticker, ~6–8s of speech — write the screenshot-worthy line):** "<Deliver the contrarian element in 3–5 sentences. State what most founders believe is true. Flip it with the actual principle — the counter-intuitive rule that explains why most founders get this wrong. Give the specific number, ratio, or decision rule that operationalises it. This voiceover should be the one line a founder sends to their co-founder over WhatsApp — write it that sharply.>"
     - **Emotion:** Reveal
     - **Transition out:** <...>
 
     ---
 
-    #### Shot 6 · 28.0–35.0s · Framework summary + DM trigger (final)
+    #### Shot 6 · 38.0–45.0s · Framework summary + DM trigger (final)
     - **Story beat:** Recap the 3-beat framework in one breath. Name the DM trigger word so saves convert to DMs.
     - **Camera:** <e.g. "Static eye-line, founder full-frontal; framework recap as lower-third typography reveal, one beat per word.">
     - **Scene:** <e.g. "End-card: 3 numbered framework beats stack on screen; DM trigger word highlighted in accent colour.">
     - **Design:** <hex colours, typography reveal motion, end-card layout>
     - **Sticker (≤6 words):** "DM '<TRIGGER>' for the 1-pager"
-    - **Voiceover (1–3 sentences, ≠ sticker, MUST name the DM trigger):** "<e.g. 'So when the term sheet hits — check ARR, check NRR, check default-alive runway. DM PLAY and I'll send the 1-pager.'>"
+    - **Voiceover (3–5 sentences, ≠ sticker, MUST name the DM trigger and recap all 3 elements, ~5–7s of speech):** "<Recap the full 3-element framework in 2 sentences (one beat per element, named). Tell the viewer you've made a 1-pager they can keep. Name the DM trigger word explicitly. Give one final reason why applying this framework matters — the cost of not knowing it. e.g. 'So: check the conversion ratio first, then the pipeline quality score, then the stage-gate number. That's the full framework. DM me SALES and I'll send you the 1-pager with all three diagnostics. Founders who skip this end up replacing a hire they should have coached — or coaching one they should have replaced.'>"
     - **Emotion:** Confidence / Resolution
     - **Transition out:** End-card hold for 1.0s.
+
+    **Full voiceover script (REQUIRED — stitch all 6 shot voiceovers into one continuous paragraph):**
+    > <Write the complete spoken script from Shot 1 through Shot 6 as a single flowing paragraph of 150–200 words. This is what the founder reads aloud from a teleprompter or memorises. Every sentence must be conversational — not a script that sounds written. Read it out loud yourself: if it takes less than 28 seconds to say, it is too short. Rewrite until it fills 30–40 seconds of natural speech.>
 
     ### Production Handoff
 
@@ -782,7 +792,7 @@ generate_reel_part2_brief:
     - **NO SOURCES IN OUTPUT.** The brief NEVER includes a Sources block, URLs, citations, or Fact-check line. Self-contained tactical framework only.
     - Shot 1 sticker AND voiceover EXPLICITLY callback Part 1's specific question (paraphrase from upstream Part 1 context — do NOT write a generic callback).
     - ≥ 6 shot blocks. Every shot has all 8 labelled fields filled with specifics — no "TBD", no one-line stand-ins.
-    - Every voiceover differs from its sticker. Sticker ≤6 words. Voiceover 1–3 conversational sentences.
+    - **Voiceover is the content, not the visuals.** Every shot voiceover: 3–5 sentences, ≠ sticker, targeting 5–8 seconds of natural speech. Single-sentence voiceovers = automatic rewrite. Total voiceover across all 6 shots: minimum 150 words. The Full Voiceover Script block is mandatory and must read as a continuous 30–40 second spoken narrative.
     - Every "Scene" line names at least one specific real prop, location, or B-roll reference (no company name required — props can be a Notion doc, a Stripe dashboard screen, a whiteboard ratio, a cap-table screenshot).
     - Every "Design" line gives at least 1 hex colour AND 1 typography choice AND 1 motion note.
     - **Production Handoff section is mandatory and complete:** Producer's 4 next actions each have an OWNER + DEADLINE; all 7 sub-blocks (with Part 1 continuity, grade-match QA, DM-trigger-live check) filled with concrete specifics.
