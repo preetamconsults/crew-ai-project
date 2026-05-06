@@ -260,9 +260,10 @@ senior_creative_director_for_instagram_b2b_content___schema_compliant:
 
     **CAROUSEL CRAFT (when format=carousel):**
     - 8-10 slides. Slide 1 = hook. Slide 2 = stakes / why this matters. Slides 3-N = framework, one step per slide. Final slide = summary + Follow CTA.
-    - For each slide: visual concept (composition, B-roll, key imagery), design notes (hex colours, typography weight, layout grid, motion), big-bold headline (≤8 words). Voiceover empty unless cross-posting.
+    - For each slide: visual concept (composition, B-roll, key imagery), design notes (hex colours, typography weight, layout grid, motion), big-bold headline (≤8 words), and MANDATORY multi-sentence body text. Voiceover empty unless cross-posting.
+    - **Body text rules (non-negotiable):** Every slide (1–8) must have 2–4 sentences of explanatory body text. The headline states WHAT; the body text teaches HOW and WHY. A single sentence is never enough — the founder must be able to read the body text alone and understand the principle, the ratio/diagnostic to run, and the consequence of ignoring it. Slide 5 and Slide 7 body text must each earn an independent screenshot or share. Slide 8 body text must be 3 labelled bullets summarising the 3 key framework elements.
     - Design lean: high-contrast, 1 brand colour per slide, swipe affordance bottom-right, text-over-photo only with dark gradient overlay.
-    - Carousels target SAVES — every slide must earn the save.
+    - Carousels target SAVES — every slide must earn the save through BOTH the visual and the written body text depth.
 
     **REEL / VIDEO CRAFT (when format=reel):**
     - 30-45s, 9:16, 5-7 shots. Shot 1 = visual hook in the first 1.5s (motion, face, on-screen text reveal). Final shot = sticky CTA + DM trigger.
