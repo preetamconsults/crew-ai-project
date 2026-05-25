@@ -132,28 +132,26 @@ class IndianStartupContentIntelligenceCrew:
     def senior_creative_director_for_instagram_b2b_content___schema_compliant(self) -> Agent:
         return Agent(
             config=self.agents_config["senior_creative_director_for_instagram_b2b_content___schema_compliant"],  # type: ignore[index]
-            # Each brief task now generates ONE brief, so 8000 max_tokens is
-            # plenty (~3000 tokens of markdown + buffer). Splitting the work
-            # into 3 LLM calls eliminates the truncation risk that hit when a
-            # single call had to produce all 3 briefs.
-            llm=_make_llm(_AZURE_GPT4O, max_tokens=8000),
+            # Expanded briefs (multi-sentence slide body text + 150-word reel
+            # voiceover scripts) require more output tokens per call.
+            llm=_make_llm(_AZURE_GPT4O, max_tokens=12000),
             max_retry_limit=1,
             max_iter=6,
-            # Per-brief wall-clock cap — fails fast rather than burning tokens.
-            max_execution_time=180,  # 3 min per brief
+            # Per-brief wall-clock cap — increased for larger content output.
+            max_execution_time=300,  # 5 min per brief
         )
 
     @agent
     def markdown_assembly_specialist(self) -> Agent:
-        # Lightweight pass-through agent — concatenates the 3 brief outputs
-        # into one markdown document. No content authorship, just stitching.
-        # gpt-4o-mini is plenty for this; it's fast and cheap.
+        # Pass-through agent — concatenates the 3 brief outputs into one
+        # markdown document. Uses gpt-4o to handle the larger combined output
+        # (3 expanded briefs now exceed gpt-4o-mini's practical output window).
         return Agent(
             config=self.agents_config["markdown_assembly_specialist"],  # type: ignore[index]
-            llm=_make_llm(_AZURE_GPT4O_MINI, max_tokens=12000),
+            llm=_make_llm(_AZURE_GPT4O, max_tokens=16000),
             max_retry_limit=1,
             max_iter=3,
-            max_execution_time=120,
+            max_execution_time=300,
         )
 
     # ---------- Tasks ----------
